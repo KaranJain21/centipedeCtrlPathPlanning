@@ -1,0 +1,201 @@
+<!-- Model for a 10-legged centipede -->
+<mujoco model="centipede">
+  <compiler angle="degree" coordinate="local" inertiafromgeom="true"/>
+  <option integrator="RK4" timestep="0.01"/>
+  <default>
+    <joint armature="1" damping="1" limited="true"/>
+    <geom conaffinity="0" condim="3" density="5.0" friction="1 0.5 0.5" margin="0.01" rgba="0.8 0.6 0.4 1"/>
+  </default>
+  <asset>
+    <texture builtin="gradient" height="100" rgb1="1 1 1" rgb2="0 0 0" type="skybox" width="100"/>
+    <texture builtin="flat" height="1278" mark="cross" markrgb="1 1 1" name="texgeom" random="0.01" rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" type="cube" width="127"/>
+    <texture builtin="checker" height="100" name="texplane" rgb1="0 0 0" rgb2="0.8 0.8 0.8" type="2d" width="100"/>
+    <material name="MatPlane" reflectance="0.5" shininess="1" specular="1" texrepeat="60 60" texture="texplane"/>
+    <material name="geom" texture="texgeom" texuniform="true"/>
+  </asset>
+  <worldbody>
+    <light cutoff="100" diffuse="1 1 1" dir="-0 0 -1.3" directional="true" exponent="1" pos="0 0 1.3" specular=".1 .1 .1"/>
+    <geom conaffinity="1" condim="3" material="MatPlane" name="floor" pos="0 0 0" rgba="0.8 0.9 0.8 1" size="40 40 40" type="plane"/>
+    <body name="torso00" pos="0 0 0.75">
+      <camera name="track" mode="trackcom" pos="0 -3 0.3" xyaxes="1 0 0 0 0 1"/>
+      <geom fromto="0 -0.1 0 0 0.1 0" name="torsoGeom00" size="0.06" type="capsule"/>
+      <joint armature="0" damping="0" limited="false" margin="0.01" name="root" pos="0 0 0" type="free"/>
+      <body name="leftLeg00" pos="0 0.1 0">
+        <joint axis="0 0 1" name="leftHipZ00" pos="0 0 0" range="-20 20" type="hinge"/>
+        <geom fromto="0 0 0 0 0.1 0" size="0.03" type="capsule"/>
+        <body pos="0 0.1 0">
+          <joint axis="-1 0 0" name="leftHipX00" pos="0 0 0" range="-30 30" type="hinge"/>
+          <geom fromto="0 0 0 0 0.2 0" size="0.03" type="capsule"/>
+          <body pos="0 0.2 0">
+            <joint axis="-1 0 0" name="leftKnee00" pos="0 0 0" range="20 90" type="hinge"/>
+            <geom fromto="0 0 0 0 0.3 0" size="0.03" type="capsule"/>
+          </body>
+        </body>
+      </body>
+      <body name="rightLeg00" pos="0 -0.1 0">
+        <joint axis="0 0 1" name="rightHipZ00" pos="0 0 0" range="-20 20" type="hinge"/>
+        <geom fromto="0 0 0 0 -0.1 0" size="0.03" type="capsule"/>
+        <body pos="0 -0.1 0">
+          <joint axis="1 0 0" name="rightHipX00" pos="0 0 0" range="-30 30" type="hinge"/>
+          <geom fromto="0 0 0 0 -0.2 0" size="0.03" type="capsule"/>
+          <body pos="0 -0.2 0">
+            <joint axis="1 0 0" name="rightKnee00" pos="0 0 0" range="20 90" type="hinge"/>
+            <geom fromto="0 0 0 0 -0.3 0" size="0.03" type="capsule"/>
+          </body>
+        </body>
+      </body>
+      <body name="torso01" pos="-0.2 0 0">
+        <geom fromto="0 -0.1 0 0 0.1 0" name="torsoGeom01" size="0.06" type="capsule"/>
+        <joint armature="0.02" axis="1 0 0" damping="5" name="torsoX01" pos="0 0 0" range="-15 15" stiffness="10" type="hinge"/>
+        <joint armature="0.02" axis="0 1 0" damping="5" name="torsoY01" pos="-0.1 0 0" range="-15 15" stiffness="10" type="hinge"/>
+        <joint armature="0.02" axis="0 0 1" damping="5" name="torsoZ01" pos="0 0 0" range="-15 15" stiffness="10" type="hinge"/>
+        <body name="leftLeg01" pos="0 0.1 0">
+          <joint axis="0 0 1" name="leftHipZ01" pos="0 0 0" range="-20 20" type="hinge"/>
+          <geom fromto="0 0 0 0 0.1 0" size="0.03" type="capsule"/>
+          <body pos="0 0.1 0">
+            <joint axis="-1 0 0" name="leftHipX01" pos="0 0 0" range="-30 30" type="hinge"/>
+            <geom fromto="0 0 0 0 0.2 0" size="0.03" type="capsule"/>
+            <body pos="0 0.2 0">
+              <joint axis="-1 0 0" name="leftKnee01" pos="0 0 0" range="20 90" type="hinge"/>
+              <geom fromto="0 0 0 0 0.3 0" size="0.03" type="capsule"/>
+            </body>
+          </body>
+        </body>
+        <body name="rightLeg01" pos="0 -0.1 0">
+          <joint axis="0 0 1" name="rightHipZ01" pos="0 0 0" range="-20 20" type="hinge"/>
+          <geom fromto="0 0 0 0 -0.1 0" size="0.03" type="capsule"/>
+          <body pos="0 -0.1 0">
+            <joint axis="1 0 0" name="rightHipX01" pos="0 0 0" range="-30 30" type="hinge"/>
+            <geom fromto="0 0 0 0 -0.2 0" size="0.03" type="capsule"/>
+            <body pos="0 -0.2 0">
+              <joint axis="1 0 0" name="rightKnee01" pos="0 0 0" range="20 90" type="hinge"/>
+              <geom fromto="0 0 0 0 -0.3 0" size="0.03" type="capsule"/>
+            </body>
+          </body>
+        </body>
+        <body name="torso02" pos="-0.2 0 0">
+          <geom fromto="0 -0.1 0 0 0.1 0" name="torsoGeom02" size="0.06" type="capsule"/>
+          <joint armature="0.02" axis="1 0 0" damping="5" name="torsoX02" pos="0 0 0" range="-15 15" stiffness="10" type="hinge"/>
+          <joint armature="0.02" axis="0 1 0" damping="5" name="torsoY02" pos="-0.1 0 0" range="-15 15" stiffness="10" type="hinge"/>
+          <joint armature="0.02" axis="0 0 1" damping="5" name="torsoZ02" pos="0 0 0" range="-15 15" stiffness="10" type="hinge"/>
+          <body name="leftLeg02" pos="0 0.1 0">
+            <joint axis="0 0 1" name="leftHipZ02" pos="0 0 0" range="-20 20" type="hinge"/>
+            <geom fromto="0 0 0 0 0.1 0" size="0.03" type="capsule"/>
+            <body pos="0 0.1 0">
+              <joint axis="-1 0 0" name="leftHipX02" pos="0 0 0" range="-30 30" type="hinge"/>
+              <geom fromto="0 0 0 0 0.2 0" size="0.03" type="capsule"/>
+              <body pos="0 0.2 0">
+                <joint axis="-1 0 0" name="leftKnee02" pos="0 0 0" range="20 90" type="hinge"/>
+                <geom fromto="0 0 0 0 0.3 0" size="0.03" type="capsule"/>
+              </body>
+            </body>
+          </body>
+          <body name="rightLeg02" pos="0 -0.1 0">
+            <joint axis="0 0 1" name="rightHipZ02" pos="0 0 0" range="-20 20" type="hinge"/>
+            <geom fromto="0 0 0 0 -0.1 0" size="0.03" type="capsule"/>
+            <body pos="0 -0.1 0">
+              <joint axis="1 0 0" name="rightHipX02" pos="0 0 0" range="-30 30" type="hinge"/>
+              <geom fromto="0 0 0 0 -0.2 0" size="0.03" type="capsule"/>
+              <body pos="0 -0.2 0">
+                <joint axis="1 0 0" name="rightKnee02" pos="0 0 0" range="20 90" type="hinge"/>
+                <geom fromto="0 0 0 0 -0.3 0" size="0.03" type="capsule"/>
+              </body>
+            </body>
+          </body>
+          <body name="torso03" pos="-0.2 0 0">
+            <geom fromto="0 -0.1 0 0 0.1 0" name="torsoGeom03" size="0.06" type="capsule"/>
+            <joint armature="0.02" axis="1 0 0" damping="5" name="torsoX03" pos="0 0 0" range="-15 15" stiffness="10" type="hinge"/>
+            <joint armature="0.02" axis="0 1 0" damping="5" name="torsoY03" pos="-0.1 0 0" range="-15 15" stiffness="10" type="hinge"/>
+            <joint armature="0.02" axis="0 0 1" damping="5" name="torsoZ03" pos="0 0 0" range="-15 15" stiffness="10" type="hinge"/>
+            <body name="leftLeg03" pos="0 0.1 0">
+              <joint axis="0 0 1" name="leftHipZ03" pos="0 0 0" range="-20 20" type="hinge"/>
+              <geom fromto="0 0 0 0 0.1 0" size="0.03" type="capsule"/>
+              <body pos="0 0.1 0">
+                <joint axis="-1 0 0" name="leftHipX03" pos="0 0 0" range="-30 30" type="hinge"/>
+                <geom fromto="0 0 0 0 0.2 0" size="0.03" type="capsule"/>
+                <body pos="0 0.2 0">
+                  <joint axis="-1 0 0" name="leftKnee03" pos="0 0 0" range="20 90" type="hinge"/>
+                  <geom fromto="0 0 0 0 0.3 0" size="0.03" type="capsule"/>
+                </body>
+              </body>
+            </body>
+            <body name="rightLeg03" pos="0 -0.1 0">
+              <joint axis="0 0 1" name="rightHipZ03" pos="0 0 0" range="-20 20" type="hinge"/>
+              <geom fromto="0 0 0 0 -0.1 0" size="0.03" type="capsule"/>
+              <body pos="0 -0.1 0">
+                <joint axis="1 0 0" name="rightHipX03" pos="0 0 0" range="-30 30" type="hinge"/>
+                <geom fromto="0 0 0 0 -0.2 0" size="0.03" type="capsule"/>
+                <body pos="0 -0.2 0">
+                  <joint axis="1 0 0" name="rightKnee03" pos="0 0 0" range="20 90" type="hinge"/>
+                  <geom fromto="0 0 0 0 -0.3 0" size="0.03" type="capsule"/>
+                </body>
+              </body>
+            </body>
+            <body name="torso04" pos="-0.2 0 0">
+              <geom fromto="0 -0.1 0 0 0.1 0" name="torsoGeom04" size="0.06" type="capsule"/>
+              <joint armature="0.02" axis="1 0 0" damping="5" name="torsoX04" pos="0 0 0" range="-15 15" stiffness="10" type="hinge"/>
+              <joint armature="0.02" axis="0 1 0" damping="5" name="torsoY04" pos="-0.1 0 0" range="-15 15" stiffness="10" type="hinge"/>
+              <joint armature="0.02" axis="0 0 1" damping="5" name="torsoZ04" pos="0 0 0" range="-15 15" stiffness="10" type="hinge"/>
+              <body name="leftLeg04" pos="0 0.1 0">
+                <joint axis="0 0 1" name="leftHipZ04" pos="0 0 0" range="-20 20" type="hinge"/>
+                <geom fromto="0 0 0 0 0.1 0" size="0.03" type="capsule"/>
+                <body pos="0 0.1 0">
+                  <joint axis="-1 0 0" name="leftHipX04" pos="0 0 0" range="-30 30" type="hinge"/>
+                  <geom fromto="0 0 0 0 0.2 0" size="0.03" type="capsule"/>
+                  <body pos="0 0.2 0">
+                    <joint axis="-1 0 0" name="leftKnee04" pos="0 0 0" range="20 90" type="hinge"/>
+                    <geom fromto="0 0 0 0 0.3 0" size="0.03" type="capsule"/>
+                  </body>
+                </body>
+              </body>
+              <body name="rightLeg04" pos="0 -0.1 0">
+                <joint axis="0 0 1" name="rightHipZ04" pos="0 0 0" range="-20 20" type="hinge"/>
+                <geom fromto="0 0 0 0 -0.1 0" size="0.03" type="capsule"/>
+                <body pos="0 -0.1 0">
+                  <joint axis="1 0 0" name="rightHipX04" pos="0 0 0" range="-30 30" type="hinge"/>
+                  <geom fromto="0 0 0 0 -0.2 0" size="0.03" type="capsule"/>
+                  <body pos="0 -0.2 0">
+                    <joint axis="1 0 0" name="rightKnee04" pos="0 0 0" range="20 90" type="hinge"/>
+                    <geom fromto="0 0 0 0 -0.3 0" size="0.03" type="capsule"/>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <motor name="leftHipZ00" ctrllimited="true" ctrlrange="-1.0 1.0" joint="leftHipZ00" gear="150"/>
+    <motor name="leftHipX00" ctrllimited="true" ctrlrange="-1.0 1.0" joint="leftHipX00" gear="150"/>
+    <motor name="leftKnee00" ctrllimited="true" ctrlrange="-1.0 1.0" joint="leftKnee00" gear="150"/>
+    <motor name="rightHipZ00" ctrllimited="true" ctrlrange="-1.0 1.0" joint="rightHipZ00" gear="150"/>
+    <motor name="rightHipX00" ctrllimited="true" ctrlrange="-1.0 1.0" joint="rightHipX00" gear="150"/>
+    <motor name="rightKnee00" ctrllimited="true" ctrlrange="-1.0 1.0" joint="rightKnee00" gear="150"/>
+    <motor name="leftHipZ01" ctrllimited="true" ctrlrange="-1.0 1.0" joint="leftHipZ01" gear="150"/>
+    <motor name="leftHipX01" ctrllimited="true" ctrlrange="-1.0 1.0" joint="leftHipX01" gear="150"/>
+    <motor name="leftKnee01" ctrllimited="true" ctrlrange="-1.0 1.0" joint="leftKnee01" gear="150"/>
+    <motor name="rightHipZ01" ctrllimited="true" ctrlrange="-1.0 1.0" joint="rightHipZ01" gear="150"/>
+    <motor name="rightHipX01" ctrllimited="true" ctrlrange="-1.0 1.0" joint="rightHipX01" gear="150"/>
+    <motor name="rightKnee01" ctrllimited="true" ctrlrange="-1.0 1.0" joint="rightKnee01" gear="150"/>
+    <motor name="leftHipZ02" ctrllimited="true" ctrlrange="-1.0 1.0" joint="leftHipZ02" gear="150"/>
+    <motor name="leftHipX02" ctrllimited="true" ctrlrange="-1.0 1.0" joint="leftHipX02" gear="150"/>
+    <motor name="leftKnee02" ctrllimited="true" ctrlrange="-1.0 1.0" joint="leftKnee02" gear="150"/>
+    <motor name="rightHipZ02" ctrllimited="true" ctrlrange="-1.0 1.0" joint="rightHipZ02" gear="150"/>
+    <motor name="rightHipX02" ctrllimited="true" ctrlrange="-1.0 1.0" joint="rightHipX02" gear="150"/>
+    <motor name="rightKnee02" ctrllimited="true" ctrlrange="-1.0 1.0" joint="rightKnee02" gear="150"/>
+    <motor name="leftHipZ03" ctrllimited="true" ctrlrange="-1.0 1.0" joint="leftHipZ03" gear="150"/>
+    <motor name="leftHipX03" ctrllimited="true" ctrlrange="-1.0 1.0" joint="leftHipX03" gear="150"/>
+    <motor name="leftKnee03" ctrllimited="true" ctrlrange="-1.0 1.0" joint="leftKnee03" gear="150"/>
+    <motor name="rightHipZ03" ctrllimited="true" ctrlrange="-1.0 1.0" joint="rightHipZ03" gear="150"/>
+    <motor name="rightHipX03" ctrllimited="true" ctrlrange="-1.0 1.0" joint="rightHipX03" gear="150"/>
+    <motor name="rightKnee03" ctrllimited="true" ctrlrange="-1.0 1.0" joint="rightKnee03" gear="150"/>
+    <motor name="leftHipZ04" ctrllimited="true" ctrlrange="-1.0 1.0" joint="leftHipZ04" gear="150"/>
+    <motor name="leftHipX04" ctrllimited="true" ctrlrange="-1.0 1.0" joint="leftHipX04" gear="150"/>
+    <motor name="leftKnee04" ctrllimited="true" ctrlrange="-1.0 1.0" joint="leftKnee04" gear="150"/>
+    <motor name="rightHipZ04" ctrllimited="true" ctrlrange="-1.0 1.0" joint="rightHipZ04" gear="150"/>
+    <motor name="rightHipX04" ctrllimited="true" ctrlrange="-1.0 1.0" joint="rightHipX04" gear="150"/>
+    <motor name="rightKnee04" ctrllimited="true" ctrlrange="-1.0 1.0" joint="rightKnee04" gear="150"/>
+  </actuator>
+</mujoco>
