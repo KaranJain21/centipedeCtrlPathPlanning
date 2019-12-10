@@ -2,3 +2,4 @@
 /MUJOCO_LOG.TXT
 *.png
 *.csv
+*.pyc

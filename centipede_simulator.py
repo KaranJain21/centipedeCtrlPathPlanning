@@ -43,8 +43,11 @@ controlParams = {
 timeSteps=500	# Control time steps, 25 Hz
 stateArr = np.zeros((2*env.init_qvel.shape[0],timeSteps+1))
 stateArr[:,0] = env.reset()
+genContPts=1
+saveParams=[]
 for t in range(timeSteps):
-	action = env.get_action(t, 1)
+	action, genContPts, saveParams = \
+	env.get_action(t, genContPts, saveParams)
 	stateArr[:,t+1], _, _, _ = env.step(action)
 	env.render()
 #np.savetxt('test.csv', stateArr, delimiter=',', fmt='%s')
