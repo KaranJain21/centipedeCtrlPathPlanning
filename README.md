@@ -1,4 +1,4 @@
-# Control and path planning for a centipede-like robot
+# Modeling and control of a centipede-like robot
 
 This repository contains the following:
 - centipede_xml_generator.py : MuJoCo model generator for a centipede with 'N' pairs of legs. 'N' and other physical parameters can be modified here as desired. Run this script to generate an '.xml' model file for MuJoCo.
