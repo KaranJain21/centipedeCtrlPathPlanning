@@ -42,7 +42,7 @@ controlParams = {
 	'u_ref': u_ref,
 }
 '''
-timeSteps=250	# Control time steps, 25 Hz
+timeSteps=500	# Control time steps, 25 Hz
 stateArr = np.zeros((2*env.init_qvel.shape[0],timeSteps+1))
 stateArr[:,0] = env.reset()
 genContPts=1
@@ -74,6 +74,6 @@ ax[1].legend()
 ax[-1].set_xlabel('Time [sec]')
 ax[-1].set_xlim([0,timeSteps/25])
 
-fig.tight_layout(pad=0.1)
-fig.savefig('/home/kj/Pictures/headPosVel.pdf')
+#fig.tight_layout(pad=0.1)
+#fig.savefig('headPosVel.pdf')
 plt.show()

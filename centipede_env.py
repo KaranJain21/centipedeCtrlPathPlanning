@@ -144,7 +144,7 @@ class CentipedeEnv(mujoco_env.MujocoEnv, utils.EzPickle):
 		legAngleMin=20
 		legAngleMax=90
 		boundsSolverParams=np.array([params,0])
-		'''
+		
 		anglesMinX=minimize(self.contactPtBoundsSolver, (0,0,np.deg2rad(30)), args=boundsSolverParams, \
 			bounds=(np.deg2rad([appendageAngleMin,appendageAngleMax]),np.deg2rad([thighAngleMin,thighAngleMax]), \
 			np.deg2rad([legAngleMin,legAngleMax]))).x
@@ -165,8 +165,7 @@ class CentipedeEnv(mujoco_env.MujocoEnv, utils.EzPickle):
 		tipPosMaxXEF=self.tip_pos_BF2EF(self.get_tip_pos_BF(anglesMaxX, params[-1]),params[-3:-1])
 		tipPosMaxYEF=self.tip_pos_BF2EF(self.get_tip_pos_BF(anglesMaxY, params[-1]),params[-3:-1])
 		return tipPosMinXEF[0], tipPosMinYEF[1], tipPosMaxXEF[0], tipPosMaxYEF[1]
-		'''
-		return -0.2, 0.48, 0.2, 0.6
+		#return -0.2, 0.48, 0.2, 0.6
 
 	def get_action(self, time, genContactPts, savedParams):
 		nu=self.action_space.shape[0]
@@ -221,23 +220,15 @@ class CentipedeEnv(mujoco_env.MujocoEnv, utils.EzPickle):
 		segmentPeriodicity=3	# Gait repeats every n segments
 		Kp=0.3
 		Kd=0.12
-		for i in range(N):
-			action[6*i+0]=controlSat*np.sin(time/20+i*2*np.pi/segmentPeriodicity)
-			action[6*i+1]=-controlSat
-			action[6*i+2]=controlSat*np.sign(np.sin(time/20+i*2*np.pi/segmentPeriodicity-np.pi/2))
-			#action[6*i+2]=controlSat
-			action[6*i+3]=action[6*i+0]
-			action[6*i+4]=action[6*i+1]
-			action[6*i+5]=action[6*i+2]
-		#action[0]=controlSat
-		charTime=12	# Some characteristic time
+		
+		charTime=12	# Characteristic number of time-steps
 		desAppendageAngleEnd=np.deg2rad(-5)
 		t1=t0+2*charTime
 		t2=t1+2*charTime
 		if (time > t0 + 6*charTime) and (not genContactPts):
 			genContactPts=1
 		#print(linkPosArr[0,:])
-		'''
+		
 		if len(desContactPointArr):
 			for i in range(N):
 				if i%3==0:
@@ -273,8 +264,17 @@ class CentipedeEnv(mujoco_env.MujocoEnv, utils.EzPickle):
 					if (time-t2)>=2*charTime:
 						desJointAngleArr[6*i]=desAppendageAngleEnd
 						desJointAngleArr[6*i+3]=desAppendageAngleEnd
-		'''
-		# action=self.action_space.sample()
+
+		for i in range(N):
+			action[6*i+0]=controlSat*np.sin(time/20+i*2*np.pi/segmentPeriodicity)
+			action[6*i+1]=-controlSat
+			action[6*i+2]=controlSat*np.sign(np.sin(time/20+i*2*np.pi/segmentPeriodicity-np.pi/2))
+			#action[6*i+2]=controlSat
+			action[6*i+3]=action[6*i+0]
+			action[6*i+4]=action[6*i+1]
+			action[6*i+5]=action[6*i+2]
+
+		# action=self.action_space.sample()	# For random actions at every joint
 		return action, genContactPts, (desContactPointArr, desJointAngleArr, t0, np.hstack((linkPosArr[0,:],linkVelArr[0,3:6])))
 
 	def _get_obs(self):
