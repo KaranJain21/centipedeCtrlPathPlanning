@@ -6,6 +6,8 @@ import moviepy.editor as mpy
 from rot_utils import *
 import matplotlib.pyplot as plt
 import controlpy
+from ModifyPlotForPublication import *
+ModifyPlotForPublication()
 
 def linearize_dynamics(f, x_ref, u_ref, my_eps):
 	dx, du = x_ref.shape[0], u_ref.shape[0]
@@ -40,19 +42,38 @@ controlParams = {
 	'u_ref': u_ref,
 }
 '''
-timeSteps=500	# Control time steps, 25 Hz
+timeSteps=250	# Control time steps, 25 Hz
 stateArr = np.zeros((2*env.init_qvel.shape[0],timeSteps+1))
 stateArr[:,0] = env.reset()
 genContPts=1
 saveParams=[]
+headPosVelArr=np.zeros((timeSteps,6))
+
 for t in range(timeSteps):
 	action, genContPts, saveParams = \
 	env.get_action(t, genContPts, saveParams)
+	headPosVelArr[t,:]=saveParams[-1]
 	stateArr[:,t+1], _, _, _ = env.step(action)
 	env.render()
-#np.savetxt('test.csv', stateArr, delimiter=',', fmt='%s')
-'''
-fig, ax = plt.subplots(1,1)
-ax.plot(range(timeSteps+1),stateArr.T)
+
+avgSpeed=(headPosVelArr[-1,0]-headPosVelArr[0,0])/(timeSteps/25)
+print(avgSpeed)
+
+n = 2	# Number of subplots
+ieeeColumnWidth = 3.46457  # corresponds to 88mm
+figureHeight = 1.0 * ieeeColumnWidth
+fig, ax = plt.subplots(n,1, figsize=[ieeeColumnWidth, figureHeight], sharex=True)
+ax[0].plot(0.04*np.arange(timeSteps), headPosVelArr[:,0], color='b', label='X-position')
+ax[0].set_ylabel('Head X-position [m]')
+
+ax[1].plot(0.04*np.arange(timeSteps), headPosVelArr[:,3], color='b', label='Actual speed')
+ax[1].plot([0, timeSteps/25], [avgSpeed, avgSpeed], 'r-', dashes=[5, 3], label='Average speed')
+ax[1].set_ylabel('Head X-velocity [m/s]')
+ax[1].legend()
+
+ax[-1].set_xlabel('Time [sec]')
+ax[-1].set_xlim([0,timeSteps/25])
+
+fig.tight_layout(pad=0.1)
+fig.savefig('/home/kj/Pictures/headPosVel.pdf')
 plt.show()
-'''

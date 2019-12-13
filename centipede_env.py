@@ -180,7 +180,7 @@ class CentipedeEnv(mujoco_env.MujocoEnv, utils.EzPickle):
 
 		# Extract saved parameters
 		if len(savedParams):
-			desContactPointArr, desJointAngleArr, t0 = savedParams
+			desContactPointArr, desJointAngleArr, t0, _ = savedParams
 		else:
 			desContactPointArr, desJointAngleArr, t0 = [],[],0
 
@@ -236,7 +236,7 @@ class CentipedeEnv(mujoco_env.MujocoEnv, utils.EzPickle):
 		t2=t1+2*charTime
 		if (time > t0 + 6*charTime) and (not genContactPts):
 			genContactPts=1
-		print(linkPosArr[0,:])
+		#print(linkPosArr[0,:])
 		'''
 		if len(desContactPointArr):
 			for i in range(N):
@@ -275,7 +275,7 @@ class CentipedeEnv(mujoco_env.MujocoEnv, utils.EzPickle):
 						desJointAngleArr[6*i+3]=desAppendageAngleEnd
 		'''
 		# action=self.action_space.sample()
-		return action, genContactPts, (desContactPointArr, desJointAngleArr, t0)
+		return action, genContactPts, (desContactPointArr, desJointAngleArr, t0, np.hstack((linkPosArr[0,:],linkVelArr[0,3:6])))
 
 	def _get_obs(self):
 		return np.concatenate([
